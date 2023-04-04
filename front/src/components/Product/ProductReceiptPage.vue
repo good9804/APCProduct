@@ -14,7 +14,8 @@
             id="stats-tab"
             class="inline-block w-full p-4 rounded-tl-lg bg-gray-50 hover:bg-gray-100 focus:outline-none dark:bg-gray-700 dark:hover:bg-gray-600"
           >
-            유저 아이디 : {{ selectedProduct.userid }} 총 무게 :
+            날짜 : {{ selectedProduct.createdAt }} 유저 아이디 :
+            {{ selectedProduct.userid }} 총 무게 :
             {{ selectedProduct.kg * selectedProduct.quantity }} KG
           </div>
         </div>
@@ -64,47 +65,94 @@
           </dl>
         </div>
       </div>
-      <div
-        id="imagelist"
-        class="relative max-h-96 overflow-y-scroll sm:rounded-lg"
-      >
-        <table
-          v-if="productList.length !== 0"
-          class="my-3 w-full text-sm text-left text-gray-500 dark:text-gray-400"
+      <div class="flex flex-row-2">
+        <div
+          class="block p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700"
         >
-          <thead
-            class="text-2xl text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
+          <DatePicker v-model="date" mode="date" />
+          <label
+            for="default-search"
+            class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
+            >Search</label
           >
-            <tr>
-              <th scope="col" class="text-center text-white py-3 px-6">시간</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr
-              v-for="product in productList"
-              :key="product.idx"
-              class="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+          <div class="relative">
+            <div
+              class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none"
             >
-              <th
-                scope="row"
-                class="py-4 px-6 text-2xl font-bold text-gray-900 text-center whitespace-nowrap dark:text-white"
+              <svg
+                aria-hidden="true"
+                class="w-5 h-5 text-gray-500 dark:text-gray-400"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
               >
-                유저 아이디 : {{ product["userid"] }} 입고 신청 시간 :
-                {{ product["createdAt"] }}
-                <button
-                  v-on:click="viewProduct(product)"
-                  class="relative text-2xl inline-flex items-center justify-center overflow-hidden text-2xl font-bold text-gray-900 rounded-lg group bg-gradient-to-br from-teal-300 to-lime-300 group-hover:from-teal-300 group-hover:to-lime-300 dark:text-white dark:hover:text-gray-900 focus:ring-4 focus:outline-none focus:ring-lime-200 dark:focus:ring-lime-800"
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                ></path>
+              </svg>
+            </div>
+            <input
+              type="search"
+              v-model="searchId"
+              id="default-search"
+              class="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              placeholder="Id로 검색"
+              required
+            />
+          </div>
+        </div>
+        <div
+          class="block p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700"
+        >
+          <div
+            id="imagelist"
+            class="relative max-h-96 overflow-y-scroll sm:rounded-lg"
+          >
+            <table
+              v-if="productList.length !== 0"
+              class="my-3 w-full text-sm text-left text-gray-500 dark:text-gray-400"
+            >
+              <thead
+                class="text-2xl text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
+              >
+                <tr>
+                  <th scope="col" class="text-center text-white py-3 px-6">
+                    목록
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr
+                  v-for="product in productList"
+                  :key="product.idx"
+                  class="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
                 >
-                  <span
-                    class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0"
+                  <th
+                    scope="row"
+                    class="py-4 px-6 text-2xl font-bold text-gray-900 text-center whitespace-nowrap dark:text-white"
                   >
-                    확인
-                  </span>
-                </button>
-              </th>
-            </tr>
-          </tbody>
-        </table>
+                    유저 아이디 : {{ product["userid"] }} 입고 신청 날짜 :
+                    {{ product["createdAt"] }}
+                    <button
+                      v-on:click="viewProduct(product)"
+                      class="relative text-2xl inline-flex items-center justify-center overflow-hidden text-2xl font-bold text-gray-900 rounded-lg group bg-gradient-to-br from-teal-300 to-lime-300 group-hover:from-teal-300 group-hover:to-lime-300 dark:text-white dark:hover:text-gray-900 focus:ring-4 focus:outline-none focus:ring-lime-200 dark:focus:ring-lime-800"
+                    >
+                      <span
+                        class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0"
+                      >
+                        확인
+                      </span>
+                    </button>
+                  </th>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -116,8 +164,11 @@ export default {
   components: {},
   data() {
     return {
-      productList: {},
+      productList: [],
       selectedProduct: {},
+      date: new Date(),
+      allProductList: [],
+      searchId: "",
     };
   },
   mounted() {
@@ -131,7 +182,11 @@ export default {
           loginUserRole: this.$store.getters.getUserRole,
         })
         .then((res) => {
+          res.data.productList.forEach((element) => {
+            element["createdAt"] = this.formatDate(element["createdAt"]);
+          });
           this.productList = res.data.productList;
+          this.allProductList = res.data.productList;
         })
         .catch((err) => {
           console.log(err);
@@ -139,6 +194,37 @@ export default {
     },
     viewProduct(productInfo) {
       this.selectedProduct = productInfo;
+    },
+    formatDate(date) {
+      var d = new Date(date);
+      var month = "" + (d.getMonth() + 1);
+      var day = "" + d.getDate();
+      var year = d.getFullYear();
+
+      if (month.length < 2) month = "0" + month;
+      if (day.length < 2) day = "0" + day;
+
+      return [year, month, day].join("-");
+    },
+  },
+  watch: {
+    //vuex 변수의 값이 변함을 감지하는 곳
+    date() {
+      this.productList = [];
+      this.allProductList.forEach((element) => {
+        if (this.formatDate(element.createdAt) == this.formatDate(this.date)) {
+          this.productList.push(element);
+        }
+      });
+      console.log(this.productList);
+    },
+    searchId() {
+      this.productList = [];
+      this.allProductList.forEach((element) => {
+        if (this.searchId == element["userid"]) {
+          this.productList.push(element);
+        }
+      });
     },
   },
 };

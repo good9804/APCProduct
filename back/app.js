@@ -9,7 +9,7 @@ const history = require("connect-history-api-fallback");
 const fileUpload = require("express-fileupload");
 
 var indexRouter = require("./routes/index");
-var productRouter = require("./routes/products");
+var productRouter = require("./routes/users");
 
 var app = express();
 

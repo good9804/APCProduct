@@ -1,6 +1,6 @@
 var express = require("express");
 var router = express.Router();
-const Product = require("../models/product");
+const User = require("../models/user");
 
 router.post("/api/upload", async (req, res) => {
   if (
@@ -13,7 +13,8 @@ router.post("/api/upload", async (req, res) => {
       message: "Fill the form!",
     });
   } else {
-    const new_product = new Product({
+    const users = await User.findOne({ userid: req.body.userid });
+    users.productList.push({
       userid: req.body.userid,
       item: req.body.product.item,
       kind: req.body.product.kind,
@@ -22,7 +23,7 @@ router.post("/api/upload", async (req, res) => {
       quantity: req.body.product.quantity,
       others: req.body.product.others,
     });
-    await new_product.save();
+    await users.save();
     res.json({
       success: true,
       message: "Success!",
@@ -31,13 +32,21 @@ router.post("/api/upload", async (req, res) => {
 });
 
 router.post("/api/view", async (req, res) => {
-  var productList;
+  var userinfo;
+  var productList = [];
   if (req.body.loginUserRole == 0) {
-    productList = await Product.find({});
+    userinfo = await User.find({});
+    userinfo.forEach(function (item, index, arr2) {
+      item["productList"].forEach(function (item, index, arr3) {
+        productList.push(item);
+      });
+    });
+    res.json({ productList: productList });
   } else {
-    productList = await Product.find({ userid: req.body.userid });
+    userinfo = await User.find({ userid: req.body.userid });
+    console.log(userinfo, userinfo[0].productList);
+    res.json({ productList: userinfo[0].productList });
   }
-  res.json({ productList: productList });
 });
 
 module.exports = router;
