@@ -9,7 +9,8 @@ const history = require("connect-history-api-fallback");
 const fileUpload = require("express-fileupload");
 
 var indexRouter = require("./routes/index");
-var productRouter = require("./routes/users");
+var userRouter = require("./routes/users");
+var orderRouter = require("./routes/orders");
 
 var app = express();
 
@@ -28,7 +29,8 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/", indexRouter);
-app.use("/product", productRouter);
+app.use("/product", userRouter);
+app.use("/product", orderRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

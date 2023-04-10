@@ -21,6 +21,12 @@ const router = createRouter({
       component: () => import("@/components/Order/OrderPage"),
       meta: { requiresAuth: true },
     },
+    {
+      path: "/product/order/receipt",
+      name: "OrderReceiptPage",
+      component: () => import("@/components/Order/OrderReceiptPage"),
+      meta: { requiresAuth: true },
+    },
   ],
 });
 
