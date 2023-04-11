@@ -13,6 +13,10 @@ const orderSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    order_request_cancel: {
+      type: Boolean,
+      default: false,
+    },
     order_others: { type: String },
   },
   {

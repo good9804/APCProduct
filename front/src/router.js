@@ -27,6 +27,31 @@ const router = createRouter({
       component: () => import("@/components/Order/OrderReceiptPage"),
       meta: { requiresAuth: true },
     },
+    {
+      path: "/product/register",
+      name: "ProductRegisterPage",
+      component: () => import("@/components/Register/ProductRegisterPage"),
+      meta: { requiresAuth: true },
+    },
+    {
+      path: "/product/admin",
+      name: "AdminPage",
+      component: () => import("@/components/AdminPage"),
+      meta: { requiresAuth: true },
+    },
+    {
+      path: "/product/counsel",
+      name: "CustomerServicePage",
+      component: () =>
+        import("@/components/CustomerService/CustomerServicePage"),
+      meta: { requiresAuth: true },
+    },
+    {
+      path: "/product/counsel/view",
+      name: "CheckCSPage",
+      component: () => import("@/components/CustomerService/CheckCSPage"),
+      meta: { requiresAuth: true },
+    },
   ],
 });
 
