@@ -18,7 +18,7 @@ router.post("/api/register", async (req, res) => {
   }
 });
 
-router.get("/api/product/view", async (req, res) => {
+router.get("/api/view", async (req, res) => {
   try {
     const productList = await Product.find({});
     res.json({ productList: productList, message: "success" });
@@ -27,7 +27,7 @@ router.get("/api/product/view", async (req, res) => {
   }
 });
 
-router.get("/api/product/admin/view", async (req, res) => {
+router.get("/api/admin/view", async (req, res) => {
   try {
     var productList = [];
     const productLists = await Product.find({});
@@ -43,7 +43,7 @@ router.get("/api/product/admin/view", async (req, res) => {
   }
 });
 
-router.post("/api/product/delete", async (req, res) => {
+router.post("/api/delete", async (req, res) => {
   //유저 삭제
   try {
     var productList = [];

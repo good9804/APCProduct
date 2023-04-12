@@ -4,39 +4,15 @@ const router = createRouter({
   history: createWebHistory(),
   routes: [
     {
-      path: "/product/main",
-      name: "ProductPage",
-      component: () => import("@/components/Product/ProductPage"),
+      path: "/product/import",
+      name: "ImportPage",
+      component: () => import("@/components/Import/ImportPage"),
       meta: { requiresAuth: true },
     },
     {
-      path: "/product/receipt",
-      name: "ProductReceiptPage",
-      component: () => import("@/components/Product/ProductReceiptPage"),
-      meta: { requiresAuth: true },
-    },
-    {
-      path: "/product/order",
-      name: "ProductOrderPage",
-      component: () => import("@/components/Order/OrderPage"),
-      meta: { requiresAuth: true },
-    },
-    {
-      path: "/product/order/receipt",
-      name: "OrderReceiptPage",
-      component: () => import("@/components/Order/OrderReceiptPage"),
-      meta: { requiresAuth: true },
-    },
-    {
-      path: "/product/register",
-      name: "ProductRegisterPage",
-      component: () => import("@/components/Register/ProductRegisterPage"),
-      meta: { requiresAuth: true },
-    },
-    {
-      path: "/product/admin",
-      name: "AdminPage",
-      component: () => import("@/components/AdminPage"),
+      path: "/product/import/view",
+      name: "ImportViewPage",
+      component: () => import("@/components/Import/ImportViewPage"),
       meta: { requiresAuth: true },
     },
     {
@@ -47,9 +23,19 @@ const router = createRouter({
       meta: { requiresAuth: true },
     },
     {
-      path: "/product/counsel/view",
-      name: "CheckCSPage",
-      component: () => import("@/components/CustomerService/CheckCSPage"),
+      path: "/product/counsel/view", //view : admin console 이나 userpage로 이동하기위해 만듬
+      meta: { requiresCounselRole: true },
+    },
+    {
+      path: "/product/counsel/admin/view",
+      name: "CheckCSAdminPage",
+      component: () => import("@/components/CustomerService/CheckCSAdminPage"),
+      meta: { requiresAdmin: true },
+    },
+    {
+      path: "/product/counsel/user/view",
+      name: "CheckCSUserPage",
+      component: () => import("@/components/CustomerService/CheckCSUserPage"),
       meta: { requiresAuth: true },
     },
   ],
@@ -88,6 +74,18 @@ router.beforeEach(async function (to, _, next) {
       next("/users/adminpage");
     } else if (role == 1) {
       next("/users/usermypage");
+    } else {
+      alert("로그인 후 이용해주세요.");
+      next("/users/login");
+    }
+  }
+  if (to.meta.requiresCounselRole) {
+    const role = await store.getters.getUserRole;
+    console.log(role);
+    if (role == 0) {
+      next("/product/counsel/admin/view");
+    } else if (role == 1) {
+      next("/product/counsel/user/view");
     } else {
       alert("로그인 후 이용해주세요.");
       next("/users/login");

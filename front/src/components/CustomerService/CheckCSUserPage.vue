@@ -14,9 +14,8 @@
             id="stats-tab"
             class="inline-block w-full p-4 rounded-tl-lg bg-gray-50 hover:bg-gray-100 focus:outline-none dark:bg-gray-700 dark:hover:bg-gray-600"
           >
-            날짜 : {{ selectedProduct.createdAt }} 유저 아이디 :
-            {{ selectedProduct.userid }} 총 무게 :
-            {{ selectedProduct.kg * selectedProduct.quantity }} KG
+            날짜 : {{ selectedCounselInfo.createdAt }} 유저 아이디 :
+            {{ selectedCounselInfo.counsel_id }}
           </div>
         </div>
         <div
@@ -27,39 +26,21 @@
             class="grid max-w-screen-xl grid-cols-2 gap-8 p-4 mx-auto text-gray-900 sm:grid-cols-3 xl:grid-cols-3 dark:text-white sm:p-8"
           >
             <div class="flex flex-col items-center justify-center">
-              <dt class="mb-2 text-3xl font-extrabold">품목</dt>
+              <dt class="mb-2 text-3xl font-extrabold">대분류</dt>
               <dd class="text-xl text-gray-500 dark:text-white">
-                {{ selectedProduct.item }}
+                {{ selectedCounselInfo.counsel_item }}
               </dd>
             </div>
             <div class="flex flex-col items-center justify-center">
-              <dt class="mb-2 text-3xl font-extrabold">품종</dt>
+              <dt class="mb-2 text-3xl font-extrabold">제목</dt>
               <dd class="text-xl text-gray-500 dark:text-white">
-                {{ selectedProduct.kind }}
+                {{ selectedCounselInfo.counsel_title }}
               </dd>
             </div>
             <div class="flex flex-col items-center justify-center">
-              <dt class="mb-2 text-3xl font-extrabold">박스 색상</dt>
+              <dt class="mb-2 text-3xl font-extrabold">내용</dt>
               <dd class="text-xl text-gray-500 dark:text-white">
-                {{ selectedProduct.boxcolor }}
-              </dd>
-            </div>
-            <div class="flex flex-col items-center justify-center">
-              <dt class="mb-2 text-3xl font-extrabold">박스 무게</dt>
-              <dd class="text-xl text-gray-500 dark:text-white">
-                {{ selectedProduct.kg }} KG
-              </dd>
-            </div>
-            <div class="flex flex-col items-center justify-center">
-              <dt class="mb-2 text-3xl font-extrabold">수량</dt>
-              <dd class="text-xl text-gray-500 dark:text-white">
-                {{ selectedProduct.quantity }}
-              </dd>
-            </div>
-            <div class="flex flex-col items-center justify-center">
-              <dt class="mb-2 text-3xl font-extrabold">문의사항</dt>
-              <dd class="text-xl text-gray-500 dark:text-white">
-                {{ selectedProduct.others }}
+                {{ selectedCounselInfo.counsel_content }}
               </dd>
             </div>
           </dl>
@@ -70,40 +51,6 @@
           class="block p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700"
         >
           <DatePicker v-model="date" mode="date" />
-          <label
-            for="default-search"
-            class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
-            >Search</label
-          >
-          <div class="relative">
-            <div
-              class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none"
-            >
-              <svg
-                aria-hidden="true"
-                class="w-5 h-5 text-gray-500 dark:text-gray-400"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                ></path>
-              </svg>
-            </div>
-            <input
-              type="search"
-              v-model="searchId"
-              id="default-search"
-              class="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              placeholder="Id로 검색"
-              required
-            />
-          </div>
         </div>
         <div
           class="block p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700"
@@ -113,7 +60,7 @@
             class="relative max-h-96 overflow-y-scroll sm:rounded-lg"
           >
             <table
-              v-if="productList.length !== 0"
+              v-if="counselList.length !== 0"
               class="my-3 w-full text-sm text-left text-gray-500 dark:text-gray-400"
             >
               <thead
@@ -127,18 +74,18 @@
               </thead>
               <tbody>
                 <tr
-                  v-for="product in productList"
-                  :key="product.idx"
+                  v-for="counsel in counselList"
+                  :key="counsel.idx"
                   class="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
                 >
                   <th
                     scope="row"
                     class="py-4 px-6 text-2xl font-bold text-gray-900 text-center whitespace-nowrap dark:text-white"
                   >
-                    유저 아이디 : {{ product["userid"] }} 입고 신청 날짜 :
-                    {{ product["createdAt"] }}
+                    유저 아이디 : {{ counsel["counsel_id"] }} 신청 날짜 :
+                    {{ counsel["createdAt"] }}
                     <button
-                      v-on:click="viewProduct(product)"
+                      v-on:click="viewCounsel(counsel)"
                       class="relative text-2xl inline-flex items-center justify-center overflow-hidden text-2xl font-bold text-gray-900 rounded-lg group bg-gradient-to-br from-teal-300 to-lime-300 group-hover:from-teal-300 group-hover:to-lime-300 dark:text-white dark:hover:text-gray-900 focus:ring-4 focus:outline-none focus:ring-lime-200 dark:focus:ring-lime-800"
                     >
                       <span
@@ -164,36 +111,35 @@ export default {
   components: {},
   data() {
     return {
-      productList: [],
-      selectedProduct: {},
+      counselList: [],
+      selectedCounselInfo: {},
       date: new Date(),
-      allProductList: [],
-      searchId: "",
+      allCounselList: [],
     };
   },
   mounted() {
-    this.getProductList();
+    this.getcounselList();
   },
   methods: {
-    getProductList() {
+    getcounselList() {
       this.$axios
-        .post("/product/api/view", {
+        .post("/product/api/counsel/view", {
           userid: this.$store.getters.getUserId,
           loginUserRole: this.$store.getters.getUserRole,
         })
         .then((res) => {
-          res.data.productList.forEach((element) => {
+          res.data.counselList.forEach((element) => {
             element["createdAt"] = this.formatDate(element["createdAt"]);
           });
-          this.productList = res.data.productList;
-          this.allProductList = res.data.productList;
+          this.counselList = res.data.counselList;
+          this.allCounselList = res.data.counselList;
         })
         .catch((err) => {
           console.log(err);
         });
     },
-    viewProduct(productInfo) {
-      this.selectedProduct = productInfo;
+    viewCounsel(counselinfo) {
+      this.selectedCounselInfo = counselinfo;
     },
     formatDate(date) {
       var d = new Date(date);
@@ -210,21 +156,13 @@ export default {
   watch: {
     //vuex 변수의 값이 변함을 감지하는 곳
     date() {
-      this.productList = [];
-      this.allProductList.forEach((element) => {
+      this.counselList = [];
+      this.allCounselList.forEach((element) => {
         if (this.formatDate(element.createdAt) == this.formatDate(this.date)) {
-          this.productList.push(element);
+          this.counselList.push(element);
         }
       });
-      console.log(this.productList);
-    },
-    searchId() {
-      this.productList = [];
-      this.allProductList.forEach((element) => {
-        if (this.searchId == element["userid"]) {
-          this.productList.push(element);
-        }
-      });
+      console.log(this.counselList);
     },
   },
 };

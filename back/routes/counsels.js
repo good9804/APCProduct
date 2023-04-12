@@ -33,7 +33,7 @@ router.post("/api/counsel/view", async (req, res) => {
     counselList = await Counsel.find({ counsel_check: false });
   } else {
     counselList = await Counsel.find({
-      userid: req.body.userid,
+      counsel_id: req.body.userid,
     });
   }
   res.json({ counselList: counselList });
@@ -52,7 +52,7 @@ router.post("/api/counsel/check", async (req, res) => {
     counselList = await Counsel.find({ counsel_check: false });
   } else {
     counselList = await Counsel.find({
-      userid: req.body.userid,
+      counsel_id: req.body.userid,
     });
   }
   res.json({ counselList: counselList });

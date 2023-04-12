@@ -14,12 +14,9 @@
             id="stats-tab"
             class="inline-block w-full p-4 rounded-tl-lg bg-gray-50 hover:bg-gray-100 focus:outline-none dark:bg-gray-700 dark:hover:bg-gray-600"
           >
-            날짜 : {{ selectedOrderInfo.createdAt }} 주문 번호 :
-            {{ selectedOrderInfo.order_number }} 유저 아이디 :
-            {{ selectedOrderInfo.order_id }} 총 가격 :
-            {{
-              selectedOrderInfo.order_quantity * selectedOrderInfo.order_price
-            }}
+            날짜 : {{ selectedProduct.createdAt }} 유저 아이디 :
+            {{ selectedProduct.userid }} 총 무게 :
+            {{ selectedProduct.kg * selectedProduct.quantity }} KG
           </div>
         </div>
         <div
@@ -32,37 +29,37 @@
             <div class="flex flex-col items-center justify-center">
               <dt class="mb-2 text-3xl font-extrabold">품목</dt>
               <dd class="text-xl text-gray-500 dark:text-white">
-                {{ selectedOrderInfo.order_item }}
+                {{ selectedProduct.item }}
+              </dd>
+            </div>
+            <div class="flex flex-col items-center justify-center">
+              <dt class="mb-2 text-3xl font-extrabold">품종</dt>
+              <dd class="text-xl text-gray-500 dark:text-white">
+                {{ selectedProduct.kind }}
+              </dd>
+            </div>
+            <div class="flex flex-col items-center justify-center">
+              <dt class="mb-2 text-3xl font-extrabold">박스 색상</dt>
+              <dd class="text-xl text-gray-500 dark:text-white">
+                {{ selectedProduct.boxcolor }}
+              </dd>
+            </div>
+            <div class="flex flex-col items-center justify-center">
+              <dt class="mb-2 text-3xl font-extrabold">박스 무게</dt>
+              <dd class="text-xl text-gray-500 dark:text-white">
+                {{ selectedProduct.kg }} KG
               </dd>
             </div>
             <div class="flex flex-col items-center justify-center">
               <dt class="mb-2 text-3xl font-extrabold">수량</dt>
               <dd class="text-xl text-gray-500 dark:text-white">
-                {{ selectedOrderInfo.order_quantity }}
+                {{ selectedProduct.quantity }}
               </dd>
             </div>
             <div class="flex flex-col items-center justify-center">
-              <dt class="mb-2 text-3xl font-extrabold">가격</dt>
+              <dt class="mb-2 text-3xl font-extrabold">문의사항</dt>
               <dd class="text-xl text-gray-500 dark:text-white">
-                {{ selectedOrderInfo.order_price }}
-              </dd>
-            </div>
-            <div class="flex flex-col items-center justify-center">
-              <dt class="mb-2 text-3xl font-extrabold">상태</dt>
-              <dd class="text-xl text-gray-500 dark:text-white">
-                {{ selectedOrderInfo.order_status }}
-              </dd>
-            </div>
-            <div class="flex flex-col items-center justify-center">
-              <dt class="mb-2 text-3xl font-extrabold">출고여부</dt>
-              <dd class="text-xl text-gray-500 dark:text-white">
-                {{ selectedOrderInfo.order_shipped }}
-              </dd>
-            </div>
-            <div class="flex flex-col items-center justify-center">
-              <dt class="mb-2 text-3xl font-extrabold">기타 문의사항</dt>
-              <dd class="text-xl text-gray-500 dark:text-white">
-                {{ selectedOrderInfo.order_others }}
+                {{ selectedProduct.others }}
               </dd>
             </div>
           </dl>
@@ -73,6 +70,40 @@
           class="block p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700"
         >
           <DatePicker v-model="date" mode="date" />
+          <label
+            for="default-search"
+            class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
+            >Search</label
+          >
+          <div class="relative">
+            <div
+              class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none"
+            >
+              <svg
+                aria-hidden="true"
+                class="w-5 h-5 text-gray-500 dark:text-gray-400"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                ></path>
+              </svg>
+            </div>
+            <input
+              type="search"
+              v-model="searchId"
+              id="default-search"
+              class="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              placeholder="Id로 검색"
+              required
+            />
+          </div>
         </div>
         <div
           class="block p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700"
@@ -82,7 +113,7 @@
             class="relative max-h-96 overflow-y-scroll sm:rounded-lg"
           >
             <table
-              v-if="orderList.length !== 0"
+              v-if="productList.length !== 0"
               class="my-3 w-full text-sm text-left text-gray-500 dark:text-gray-400"
             >
               <thead
@@ -96,35 +127,24 @@
               </thead>
               <tbody>
                 <tr
-                  v-for="order in orderList"
-                  :key="order.idx"
+                  v-for="product in productList"
+                  :key="product.idx"
                   class="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
                 >
                   <th
                     scope="row"
                     class="py-4 px-6 text-2xl font-bold text-gray-900 text-center whitespace-nowrap dark:text-white"
                   >
-                    유저 아이디 : {{ order["order_id"] }} 주문 번호 :
-                    {{ order["order_number"] }} 입고 신청 날짜 :
-                    {{ order["createdAt"] }}
+                    유저 아이디 : {{ product["userid"] }} 입고 신청 날짜 :
+                    {{ product["createdAt"] }}
                     <button
-                      v-on:click="viewProduct(order)"
+                      v-on:click="viewProduct(product)"
                       class="relative text-2xl inline-flex items-center justify-center overflow-hidden text-2xl font-bold text-gray-900 rounded-lg group bg-gradient-to-br from-teal-300 to-lime-300 group-hover:from-teal-300 group-hover:to-lime-300 dark:text-white dark:hover:text-gray-900 focus:ring-4 focus:outline-none focus:ring-lime-200 dark:focus:ring-lime-800"
                     >
                       <span
                         class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0"
                       >
                         확인
-                      </span>
-                    </button>
-                    <button
-                      v-on:click="requestCloseOrder(order)"
-                      class="relative text-2xl inline-flex items-center justify-center overflow-hidden text-2xl font-bold text-gray-900 rounded-lg group bg-gradient-to-br from-teal-300 to-lime-300 group-hover:from-teal-300 group-hover:to-lime-300 dark:text-white dark:hover:text-gray-900 focus:ring-4 focus:outline-none focus:ring-lime-200 dark:focus:ring-lime-800"
-                    >
-                      <span
-                        class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0"
-                      >
-                        주문취소
                       </span>
                     </button>
                   </th>
@@ -144,35 +164,36 @@ export default {
   components: {},
   data() {
     return {
-      orderList: [],
-      selectedOrderInfo: {},
+      productList: [],
+      selectedProduct: {},
       date: new Date(),
-      allOrderList: [],
+      allProductList: [],
+      searchId: "",
     };
   },
   mounted() {
-    this.getOrderList();
+    this.getProductList();
   },
   methods: {
-    getOrderList() {
+    getProductList() {
       this.$axios
-        .post("/product/api/order/view", {
+        .post("/product/api/import/view", {
           userid: this.$store.getters.getUserId,
           loginUserRole: this.$store.getters.getUserRole,
         })
         .then((res) => {
-          res.data.orderList.forEach((element) => {
+          res.data.productList.forEach((element) => {
             element["createdAt"] = this.formatDate(element["createdAt"]);
           });
-          this.orderList = res.data.orderList;
-          this.allOrderList = res.data.orderList;
+          this.productList = res.data.productList;
+          this.allProductList = res.data.productList;
         })
         .catch((err) => {
           console.log(err);
         });
     },
-    viewProduct(orderinfo) {
-      this.selectedOrderInfo = orderinfo;
+    viewProduct(productInfo) {
+      this.selectedProduct = productInfo;
     },
     formatDate(date) {
       var d = new Date(date);
@@ -185,30 +206,25 @@ export default {
 
       return [year, month, day].join("-");
     },
-    requestCloseOrder(orderinfo) {
-      //주문취소
-      this.$axios
-        .post("/product/api/order/decline", {
-          orderinfo: orderinfo,
-        })
-        .then((res) => {
-          alert(res.data.message);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    },
   },
   watch: {
     //vuex 변수의 값이 변함을 감지하는 곳
     date() {
-      this.orderList = [];
-      this.allOrderList.forEach((element) => {
+      this.productList = [];
+      this.allProductList.forEach((element) => {
         if (this.formatDate(element.createdAt) == this.formatDate(this.date)) {
-          this.orderList.push(element);
+          this.productList.push(element);
         }
       });
-      console.log(this.orderList);
+      console.log(this.productList);
+    },
+    searchId() {
+      this.productList = [];
+      this.allProductList.forEach((element) => {
+        if (this.searchId == element["userid"]) {
+          this.productList.push(element);
+        }
+      });
     },
   },
 };

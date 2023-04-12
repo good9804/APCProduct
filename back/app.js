@@ -10,7 +10,6 @@ const fileUpload = require("express-fileupload");
 
 var indexRouter = require("./routes/index");
 var userRouter = require("./routes/users");
-var orderRouter = require("./routes/orders");
 var productRouter = require("./routes/products");
 var counselRouter = require("./routes/counsels");
 
@@ -32,7 +31,6 @@ app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/", indexRouter);
 app.use("/product", userRouter);
-app.use("/product", orderRouter);
 app.use("/product", productRouter);
 app.use("/product", counselRouter);
 

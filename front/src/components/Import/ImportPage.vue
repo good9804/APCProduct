@@ -131,7 +131,7 @@ export default {
   methods: {
     signUp: function () {
       this.$axios
-        .post("/product/api/upload", {
+        .post("/product/api/import/upload", {
           userid: this.$store.getters.getUserId,
           product: this.product,
         })

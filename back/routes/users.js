@@ -2,7 +2,7 @@ var express = require("express");
 var router = express.Router();
 const User = require("../models/user");
 
-router.post("/api/upload", async (req, res) => {
+router.post("/api/import/upload", async (req, res) => {
   if (
     req.body.product.item == "품목" ||
     req.body.product.kind == "품종" ||
@@ -31,7 +31,7 @@ router.post("/api/upload", async (req, res) => {
   }
 });
 
-router.post("/api/view", async (req, res) => {
+router.post("/api/import/view", async (req, res) => {
   var userinfo;
   var productList = [];
   if (req.body.loginUserRole == 0) {
