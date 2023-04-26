@@ -18,13 +18,36 @@ const userSchema = new mongoose.Schema(
     productList: [
       new mongoose.Schema(
         {
-          userid: { type: String },
           item: { type: String },
           kind: { type: String },
           boxcolor: { type: String },
           kg: { type: Number },
           quantity: { type: Number },
           others: { type: String },
+        },
+        {
+          timestamps: true,
+        }
+      ),
+    ],
+    import_history: [
+      new mongoose.Schema(
+        {
+          item: { type: String },
+          kind: { type: String },
+          weight: { type: Number },
+          row: { type: Number },
+          col: { type: Number },
+          ratio: { type: Number },
+          hardness: { type: Number },
+          brix: { type: Number },
+          acidity: { type: Number },
+          color: { type: Number },
+          grade_A: { type: Number },
+          grade_B: { type: Number },
+          grade_C: { type: Number },
+          grade_D: { type: Number },
+          grade_E: { type: Number },
         },
         {
           timestamps: true,
