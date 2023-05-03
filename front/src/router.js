@@ -38,6 +38,12 @@ const router = createRouter({
       component: () => import("@/components/CustomerService/CheckCSUserPage"),
       meta: { requiresAuth: true },
     },
+    {
+      path: "/product/track/view",
+      name: "TrackingServicePage",
+      component: () =>
+        import("@/components/TrackingService/TrackingServicePage"),
+    },
   ],
 });
 
