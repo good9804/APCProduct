@@ -182,6 +182,7 @@ export default {
           loginUserRole: this.$store.getters.getUserRole,
         })
         .then((res) => {
+          console.log(res.data);
           res.data.productList.forEach((element) => {
             element["createdAt"] = this.formatDate(element["createdAt"]);
           });
@@ -208,7 +209,6 @@ export default {
     },
   },
   watch: {
-    //vuex 변수의 값이 변함을 감지하는 곳
     date() {
       this.productList = [];
       this.allProductList.forEach((element) => {

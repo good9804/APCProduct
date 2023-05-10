@@ -36,9 +36,11 @@ router.post("/api/import/view", async (req, res) => {
   var productList = [];
   if (req.body.loginUserRole == 0) {
     userinfo = await User.find({});
-    userinfo.forEach(function (item, index, arr2) {
-      item["productList"].forEach(function (item, index, arr3) {
-        productList.push(item);
+    userinfo.forEach(function (item1) {
+      item1["productList"].forEach(function (item2) {
+        let item3 = item2.toJSON();
+        item3.userid = item1.userid;
+        productList.push(item3);
       });
     });
     res.json({ productList: productList });
