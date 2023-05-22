@@ -13,9 +13,9 @@ router.post("/api/import/upload", async (req, res) => {
       message: "Fill the form!",
     });
   } else {
-    const users = await User.findOne({ userid: req.body.userid });
-    users.productList.push({
-      userid: req.body.userid,
+    const users = await User.findOne({ user_id: req.body.user_id });
+    users.product_list.push({
+      user_id: req.body.user_id,
       item: req.body.product.item,
       kind: req.body.product.kind,
       boxcolor: req.body.product.boxcolor,
@@ -32,22 +32,27 @@ router.post("/api/import/upload", async (req, res) => {
 });
 
 router.post("/api/import/view", async (req, res) => {
-  var userinfo;
-  var productList = [];
-  if (req.body.loginUserRole == 0) {
-    userinfo = await User.find({});
-    userinfo.forEach(function (item1) {
-      item1["productList"].forEach(function (item2) {
-        let item3 = item2.toJSON();
-        item3.userid = item1.userid;
-        productList.push(item3);
+  try {
+    var user_info;
+    var product_list = [];
+    if (req.body.login_user_role == 0) {
+      user_info = await User.find({});
+      user_info.forEach(function (item1) {
+        item1["product_list"].forEach(function (item2) {
+          let item3 = item2.toJSON();
+          item3.user_id = item1.user_id;
+          product_list.push(item3);
+        });
       });
-    });
-    res.json({ productList: productList });
-  } else {
-    userinfo = await User.find({ userid: req.body.userid });
-    console.log(userinfo, userinfo[0].productList);
-    res.json({ productList: userinfo[0].productList });
+      res.json({ product_list: product_list });
+    } else {
+      user_info = await User.find({ user_id: req.body.user_id });
+      await console.log(user_info);
+      res.json({ product_list: user_info[0].product_list });
+    }
+  } catch (err) {
+    console.log(err);
+    res.send(err);
   }
 });
 

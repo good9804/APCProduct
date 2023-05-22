@@ -14,9 +14,9 @@
             id="stats-tab"
             class="inline-block w-full p-4 rounded-tl-lg bg-gray-50 hover:bg-gray-100 focus:outline-none dark:bg-gray-700 dark:hover:bg-gray-600"
           >
-            날짜 : {{ selectedProduct.createdAt }} 유저 아이디 :
-            {{ selectedProduct.userid }} 총 무게 :
-            {{ selectedProduct.kg * selectedProduct.quantity }} KG
+            날짜 : {{ selected_product.createdAt }} 유저 아이디 :
+            {{ selected_product.user_id }} 총 무게 :
+            {{ selected_product.kg * selected_product.quantity }} KG
           </div>
         </div>
         <div
@@ -29,37 +29,37 @@
             <div class="flex flex-col items-center justify-center">
               <dt class="mb-2 text-3xl font-extrabold">품목</dt>
               <dd class="text-xl text-gray-500 dark:text-white">
-                {{ selectedProduct.item }}
+                {{ selected_product.item }}
               </dd>
             </div>
             <div class="flex flex-col items-center justify-center">
               <dt class="mb-2 text-3xl font-extrabold">품종</dt>
               <dd class="text-xl text-gray-500 dark:text-white">
-                {{ selectedProduct.kind }}
+                {{ selected_product.kind }}
               </dd>
             </div>
             <div class="flex flex-col items-center justify-center">
               <dt class="mb-2 text-3xl font-extrabold">박스 색상</dt>
               <dd class="text-xl text-gray-500 dark:text-white">
-                {{ selectedProduct.boxcolor }}
+                {{ selected_product.boxcolor }}
               </dd>
             </div>
             <div class="flex flex-col items-center justify-center">
               <dt class="mb-2 text-3xl font-extrabold">박스 무게</dt>
               <dd class="text-xl text-gray-500 dark:text-white">
-                {{ selectedProduct.kg }} KG
+                {{ selected_product.kg }} KG
               </dd>
             </div>
             <div class="flex flex-col items-center justify-center">
               <dt class="mb-2 text-3xl font-extrabold">수량</dt>
               <dd class="text-xl text-gray-500 dark:text-white">
-                {{ selectedProduct.quantity }}
+                {{ selected_product.quantity }}
               </dd>
             </div>
             <div class="flex flex-col items-center justify-center">
               <dt class="mb-2 text-3xl font-extrabold">문의사항</dt>
               <dd class="text-xl text-gray-500 dark:text-white">
-                {{ selectedProduct.others }}
+                {{ selected_product.others }}
               </dd>
             </div>
           </dl>
@@ -113,7 +113,7 @@
             class="relative max-h-96 overflow-y-scroll sm:rounded-lg"
           >
             <table
-              v-if="productList.length !== 0"
+              v-if="product_list.length !== 0"
               class="my-3 w-full text-sm text-left text-gray-500 dark:text-gray-400"
             >
               <thead
@@ -127,7 +127,7 @@
               </thead>
               <tbody>
                 <tr
-                  v-for="product in productList"
+                  v-for="product in product_list"
                   :key="product.idx"
                   class="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
                 >
@@ -135,7 +135,7 @@
                     scope="row"
                     class="py-4 px-6 text-2xl font-bold text-gray-900 text-center whitespace-nowrap dark:text-white"
                   >
-                    유저 아이디 : {{ product["userid"] }} 입고 신청 날짜 :
+                    유저 아이디 : {{ product["user_id"] }} 입고 신청 날짜 :
                     {{ product["createdAt"] }}
                     <button
                       v-on:click="viewProduct(product)"
@@ -164,10 +164,10 @@ export default {
   components: {},
   data() {
     return {
-      productList: [],
-      selectedProduct: {},
+      product_list: [],
+      selected_product: {},
       date: new Date(),
-      allProductList: [],
+      all_product_list: [],
       searchId: "",
     };
   },
@@ -178,23 +178,23 @@ export default {
     getProductList() {
       this.$axios
         .post("/product/api/import/view", {
-          userid: this.$store.getters.getUserId,
-          loginUserRole: this.$store.getters.getUserRole,
+          user_id: this.$store.getters.getUserId,
+          login_user_role: this.$store.getters.getUserRole,
         })
         .then((res) => {
           console.log(res.data);
-          res.data.productList.forEach((element) => {
+          res.data.product_list.forEach((element) => {
             element["createdAt"] = this.formatDate(element["createdAt"]);
           });
-          this.productList = res.data.productList;
-          this.allProductList = res.data.productList;
+          this.product_list = res.data.product_list;
+          this.all_product_list = res.data.product_list;
         })
         .catch((err) => {
           console.log(err);
         });
     },
     viewProduct(productInfo) {
-      this.selectedProduct = productInfo;
+      this.selected_product = productInfo;
     },
     formatDate(date) {
       var d = new Date(date);
@@ -210,19 +210,19 @@ export default {
   },
   watch: {
     date() {
-      this.productList = [];
-      this.allProductList.forEach((element) => {
+      this.product_list = [];
+      this.all_product_list.forEach((element) => {
         if (this.formatDate(element.createdAt) == this.formatDate(this.date)) {
-          this.productList.push(element);
+          this.product_list.push(element);
         }
       });
-      console.log(this.productList);
+      console.log(this.product_list);
     },
     searchId() {
-      this.productList = [];
-      this.allProductList.forEach((element) => {
-        if (this.searchId == element["userid"]) {
-          this.productList.push(element);
+      this.product_list = [];
+      this.all_product_list.forEach((element) => {
+        if (this.searchId == element["user_id"]) {
+          this.product_list.push(element);
         }
       });
     },

@@ -21,8 +21,8 @@ router.post("/api/register", async (req, res) => {
 
 router.get("/api/view", async (req, res) => {
   try {
-    const productList = await Product.find({});
-    res.json({ productList: productList, message: "success" });
+    const product_list = await Product.find({});
+    res.json({ product_list: product_list, message: "success" });
   } catch {
     res.json({ message: "fail" });
   }
@@ -41,15 +41,15 @@ router.post("/api/detail/view", async (req, res) => {
 
 router.get("/api/admin/view", async (req, res) => {
   try {
-    var productList = [];
-    const productLists = await Product.find({});
-    await productLists.forEach(async (element) => {
-      await productList.push({
+    var product_list = [];
+    const product_lists = await Product.find({});
+    await product_lists.forEach(async (element) => {
+      await product_list.push({
         product_item: element["product_item"],
         product_detail: element["product_detail"],
       });
     });
-    res.json({ productList: productList, message: "success" });
+    res.json({ product_list: product_list, message: "success" });
   } catch {
     res.json({ message: "fail" });
   }
@@ -57,19 +57,19 @@ router.get("/api/admin/view", async (req, res) => {
 
 router.post("/api/delete", async (req, res) => {
   try {
-    var productList = [];
+    var product_list = [];
     await Product.deleteOne({
       product_item: req.body.product_item,
       product_detail: req.body.product_detail,
     });
-    const productLists = await Product.find({});
-    await productLists.forEach(async (element) => {
-      await productList.push({
+    const product_lists = await Product.find({});
+    await product_lists.forEach(async (element) => {
+      await product_list.push({
         product_item: element["product_item"],
         product_detail: element["product_detail"],
       });
     });
-    res.send(productList);
+    res.send(product_list);
   } catch (err) {
     console.log(1);
     res.send(err);

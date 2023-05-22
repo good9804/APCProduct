@@ -14,7 +14,7 @@ router.post("/api/counsel/upload", async (req, res) => {
     });
   } else {
     const new_counsel = new Counsel({
-      counsel_id: req.body.userid,
+      counsel_id: req.body.user_id,
       counsel_item: req.body.counsel.counsel_item,
       counsel_title: req.body.counsel.counsel_title,
       counsel_content: req.body.counsel.counsel_content,
@@ -28,33 +28,34 @@ router.post("/api/counsel/upload", async (req, res) => {
 });
 
 router.post("/api/counsel/view", async (req, res) => {
-  var counselList;
-  if (req.body.loginUserRole == 0) {
-    counselList = await Counsel.find({ counsel_check: false });
+  var counsel_list;
+  if (req.body.login_user_role == 0) {
+    counsel_list = await Counsel.find({ counsel_check: false });
   } else {
-    counselList = await Counsel.find({
-      counsel_id: req.body.userid,
+    counsel_list = await Counsel.find({
+      counsel_id: req.body.user_id,
     });
   }
-  res.json({ counselList: counselList });
+  res.json({ counsel_list: counsel_list });
 });
 
 router.post("/api/counsel/check", async (req, res) => {
+  console.log(req.body);
   await Counsel.findOneAndUpdate(
     {
-      counsel_id: req.body.userid,
-      counsel_title: req.body.counselinfo.counsel_title,
+      counsel_id: req.body.counsel_info.counsel_id,
+      counsel_title: req.body.counsel_info.counsel_title,
       counsel_check: false,
     },
     { counsel_check: true }
   );
-  if (req.body.loginUserRole == 0) {
-    counselList = await Counsel.find({ counsel_check: false });
+  if (req.body.login_user_role == 0) {
+    counsel_list = await Counsel.find({ counsel_check: false });
   } else {
-    counselList = await Counsel.find({
-      counsel_id: req.body.userid,
+    counsel_list = await Counsel.find({
+      counsel_id: req.body.counsel_info.counsel_id,
     });
   }
-  res.json({ counselList: counselList });
+  res.json({ counsel_list: counsel_list });
 });
 module.exports = router;

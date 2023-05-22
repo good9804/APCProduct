@@ -14,8 +14,8 @@
             id="stats-tab"
             class="inline-block w-full p-4 rounded-tl-lg bg-gray-50 hover:bg-gray-100 focus:outline-none dark:bg-gray-700 dark:hover:bg-gray-600"
           >
-            날짜 : {{ selectedCounselInfo.createdAt }} 유저 아이디 :
-            {{ selectedCounselInfo.counsel_id }}
+            날짜 : {{ selected_counsel_list.createdAt }} 유저 아이디 :
+            {{ selected_counsel_list.counsel_id }}
           </div>
         </div>
         <div
@@ -28,19 +28,19 @@
             <div class="flex flex-col items-center justify-center">
               <dt class="mb-2 text-3xl font-extrabold">대분류</dt>
               <dd class="text-xl text-gray-500 dark:text-white">
-                {{ selectedCounselInfo.counsel_item }}
+                {{ selected_counsel_list.counsel_item }}
               </dd>
             </div>
             <div class="flex flex-col items-center justify-center">
               <dt class="mb-2 text-3xl font-extrabold">제목</dt>
               <dd class="text-xl text-gray-500 dark:text-white">
-                {{ selectedCounselInfo.counsel_title }}
+                {{ selected_counsel_list.counsel_title }}
               </dd>
             </div>
             <div class="flex flex-col items-center justify-center">
               <dt class="mb-2 text-3xl font-extrabold">내용</dt>
               <dd class="text-xl text-gray-500 dark:text-white">
-                {{ selectedCounselInfo.counsel_content }}
+                {{ selected_counsel_list.counsel_content }}
               </dd>
             </div>
           </dl>
@@ -60,7 +60,7 @@
             class="relative max-h-96 overflow-y-scroll sm:rounded-lg"
           >
             <table
-              v-if="counselList.length !== 0"
+              v-if="counsel_list.length !== 0"
               class="my-3 w-full text-sm text-left text-gray-500 dark:text-gray-400"
             >
               <thead
@@ -74,7 +74,7 @@
               </thead>
               <tbody>
                 <tr
-                  v-for="counsel in counselList"
+                  v-for="counsel in counsel_list"
                   :key="counsel.idx"
                   class="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
                 >
@@ -111,10 +111,10 @@ export default {
   components: {},
   data() {
     return {
-      counselList: [],
-      selectedCounselInfo: {},
+      counsel_list: [],
+      selected_counsel_list: {},
       date: new Date(),
-      allCounselList: [],
+      all_counsel_list: [],
     };
   },
   mounted() {
@@ -125,21 +125,21 @@ export default {
       this.$axios
         .post("/product/api/counsel/view", {
           userid: this.$store.getters.getUserId,
-          loginUserRole: this.$store.getters.getUserRole,
+          login_user_role: this.$store.getters.getUserRole,
         })
         .then((res) => {
-          res.data.counselList.forEach((element) => {
+          res.data.counsel_list.forEach((element) => {
             element["createdAt"] = this.formatDate(element["createdAt"]);
           });
-          this.counselList = res.data.counselList;
-          this.allCounselList = res.data.counselList;
+          this.counsel_list = res.data.counsel_list;
+          this.all_counsel_list = res.data.counsel_list;
         })
         .catch((err) => {
           console.log(err);
         });
     },
     viewCounsel(counselinfo) {
-      this.selectedCounselInfo = counselinfo;
+      this.selected_counsel_list = counselinfo;
     },
     formatDate(date) {
       var d = new Date(date);
@@ -156,13 +156,13 @@ export default {
   watch: {
     //vuex 변수의 값이 변함을 감지하는 곳
     date() {
-      this.counselList = [];
-      this.allCounselList.forEach((element) => {
+      this.counsel_list = [];
+      this.all_counsel_list.forEach((element) => {
         if (this.formatDate(element.createdAt) == this.formatDate(this.date)) {
-          this.counselList.push(element);
+          this.counsel_list.push(element);
         }
       });
-      console.log(this.counselList);
+      console.log(this.counsel_list);
     },
   },
 };

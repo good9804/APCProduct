@@ -132,7 +132,7 @@ export default {
     signUp: function () {
       this.$axios
         .post("/product/api/import/upload", {
-          userid: this.$store.getters.getUserId,
+          user_id: this.$store.getters.getUserId,
           product: this.product,
         })
         .then((res) => {
