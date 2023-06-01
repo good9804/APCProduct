@@ -1,3 +1,16 @@
+---
+
+실행
+
+---
+
+---
+
+Windows : start.bat
+Linux : start.sh 
+
+---
+
 --- 
 
 출입고 관리
