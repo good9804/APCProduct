@@ -10,7 +10,6 @@ const productSchema = new mongoose.Schema(
     product_made: { type: String },
     product_image: { type: Buffer },
     product_others: { type: String, default: "" },
-    product_quantity: { type: Number, default: 0 },
     review_list: [
       new mongoose.Schema(
         {

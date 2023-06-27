@@ -47,16 +47,14 @@
                       <div
                         class="absolute inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-red-500 border-2 border-white rounded-full -top-2 -right-2 dark:border-gray-900"
                       >
+                        <!-- 알림 개수 modal-->
                         {{ alert_data.length }}
                       </div>
                     </button>
 
                     <!-- use the modal component, pass in the prop -->
                     <ModalTool v-if="showModal" @close="showModal = false">
-                      <!--
-       you can use custom content here to overwrite
-       default content
-       -->
+                      <!-- 알림 창 생성 modal-->
                     </ModalTool>
                   </div>
                 </div>
@@ -352,6 +350,27 @@
               </a>
             </div>
           </li>
+
+          <li>
+            <a
+              href="https://forms.gle/MSz2PNB7hNHP8Gae6"
+              class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+              ><svg
+                fill="currentColor"
+                class="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                viewBox="0 0 20 20"
+                xmlns="http://www.w3.org/2000/svg"
+                aria-hidden="true"
+              >
+                <path
+                  clip-rule="evenodd"
+                  fill-rule="evenodd"
+                  d="M18 13V5a2 2 0 00-2-2H4a2 2 0 00-2 2v8a2 2 0 002 2h3l3 3 3-3h3a2 2 0 002-2zM5 7a1 1 0 011-1h8a1 1 0 110 2H6a1 1 0 01-1-1zm1 3a1 1 0 100 2h3a1 1 0 100-2H6z"
+                ></path>
+              </svg>
+              <span class="flex-1 ml-3 whitespace-nowrap">Review</span>
+            </a>
+          </li>
         </ul>
       </div>
     </aside>
@@ -364,8 +383,8 @@ import ModalTool from "./Modal/AlertModal";
 export default {
   components: { ModalTool },
   data: () => ({
-    login: true,
-    logout: false,
+    login: true, //login 표시
+    logout: false, //logout 표시
     showModal: false,
     alert_data: [],
     show_drop_down_1: false,
@@ -376,6 +395,7 @@ export default {
   }),
   methods: {
     signOut() {
+      //signout
       this.$axios
         .get("/users/api/logout", {})
         .then((res) => {
@@ -415,6 +435,7 @@ export default {
     },
   },
   watch: {
+    //vuex 변수의 값이 변함을 감지하는 곳
     checklogin(val) {
       if (val) {
         this.login = false;
@@ -424,7 +445,6 @@ export default {
         this.logout = false;
       }
     },
-    //vuex 변수의 값이 변함을 감지하는 곳
     changeAlertData(value) {
       this.alert_data = value;
     },
