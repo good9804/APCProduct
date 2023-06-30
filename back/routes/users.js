@@ -1,6 +1,22 @@
 var express = require("express");
 var router = express.Router();
 const User = require("../models/user");
+require("dotenv").config();
+
+var firebase = require("firebase/compat/app");
+require("firebase/compat/database");
+
+const firebaseConfig = {
+  apiKey: process.env.apiKey,
+  databaseURL: process.env.databaseURL,
+  projectId: process.env.projectId,
+  storageBucket: process.env.storageBucket,
+  messagingSenderId: process.env.messagingSenderId,
+  appId: process.env.appId,
+};
+
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
 
 router.post("/api/import/upload", async (req, res) => {
   if (
@@ -23,6 +39,18 @@ router.post("/api/import/upload", async (req, res) => {
       quantity: req.body.product.quantity,
       others: req.body.product.others,
     });
+
+    var box_quantity = Math.ceil(
+      (req.body.product.kg * req.body.product.quantity) / 30
+    );
+
+    var item = {
+      user_id: req.body.user_id.toString(),
+      box_quantity: box_quantity.toString(),
+    };
+
+    firebase.database().ref("/UserImport").push(item);
+
     await users.save();
     res.json({
       success: true,
