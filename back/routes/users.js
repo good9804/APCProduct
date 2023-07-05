@@ -1,8 +1,6 @@
 var express = require("express");
 var router = express.Router();
 const User = require("../models/user");
-require("dotenv").config();
-
 var firebase = require("firebase/compat/app");
 require("firebase/compat/database");
 
@@ -30,6 +28,7 @@ router.post("/api/import/upload", async (req, res) => {
     });
   } else {
     const users = await User.findOne({ user_id: req.body.user_id });
+    
     users.product_list.push({
       user_id: req.body.user_id,
       item: req.body.product.item,
@@ -39,24 +38,30 @@ router.post("/api/import/upload", async (req, res) => {
       quantity: req.body.product.quantity,
       others: req.body.product.others,
     });
-
-    var box_quantity = Math.ceil(
-      (req.body.product.kg * req.body.product.quantity) / 30
-    );
-
-    var item = {
-      user_id: req.body.user_id.toString(),
-      box_quantity: box_quantity.toString(),
-    };
-
-    firebase.database().ref("/UserImport").push(item);
-
     await users.save();
+    var quantityQuotient=  Math.floor(req.body.product.quantity/6);
+    console.log(quantityQuotient);
+    console.log(req.body.product.quantity);
+    for(var i=0;i<quantityQuotient;i++)
+    {
+    firebase.database().ref('/UserImport').push({
+      user_id: req.body.user_id,
+      box_quantity: 6,
+      });
+      console.log("loop"+i);
+    }
+    console.log("나머지");
+    firebase.database().ref('/UserImport').push({
+        user_id: req.body.user_id,
+        box_quantity: req.body.product.quantity-quantityQuotient*6,
+      });
+      console.log("끝");
+
+  }
     res.json({
       success: true,
       message: "Success!",
     });
-  }
 });
 
 router.post("/api/import/view", async (req, res) => {
