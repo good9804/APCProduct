@@ -40,22 +40,18 @@ router.post("/api/import/upload", async (req, res) => {
     });
     await users.save();
     var quantityQuotient=  Math.floor(req.body.product.quantity/6);
-    console.log(quantityQuotient);
-    console.log(req.body.product.quantity);
     for(var i=0;i<quantityQuotient;i++)
     {
     firebase.database().ref('/UserImport').push({
       user_id: req.body.user_id,
       box_quantity: 6,
       });
-      console.log("loop"+i);
     }
-    console.log("나머지");
+    if(req.body.product.quantity-quantityQuotient*6>0){
     firebase.database().ref('/UserImport').push({
         user_id: req.body.user_id,
         box_quantity: req.body.product.quantity-quantityQuotient*6,
-      });
-      console.log("끝");
+      });}
 
   }
     res.json({
