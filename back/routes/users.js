@@ -26,7 +26,15 @@ router.post("/api/import/upload", async (req, res) => {
       success: false,
       message: "Fill the form!",
     });
-  } else {
+  } 
+  else if (
+    req.body.product.quantity < 1
+  ) {
+    res.json({
+      success: false,
+      message: "수량을 1개이상 입력해주세요.",
+    });
+  }else {
     const users = await User.findOne({ user_id: req.body.user_id });
     
     users.product_list.push({
