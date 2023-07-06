@@ -44,13 +44,13 @@ router.post("/api/import/upload", async (req, res) => {
     {
     firebase.database().ref('/UserImport').push({
       user_id: req.body.user_id,
-      box_quantity: 6,
+      box_quantity: "6",
       });
     }
     if(req.body.product.quantity-quantityQuotient*6>0){
     firebase.database().ref('/UserImport').push({
         user_id: req.body.user_id,
-        box_quantity: req.body.product.quantity-quantityQuotient*6,
+        box_quantity: (req.body.product.quantity-quantityQuotient*6).toString(),
       });}
 
   }
