@@ -17,23 +17,18 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 
 router.post("/api/import/upload", async (req, res) => {
+  try{
   if (
     req.body.product.item == "품목" ||
     req.body.product.kind == "품종" ||
     req.body.product.boxcolor == "색상"
   ) {
-    res.json({
-      success: false,
-      message: "Fill the form!",
-    });
+    throw new Error("항목을 전부 선택해주세요.");
   } 
   else if (
     req.body.product.quantity < 1
   ) {
-    res.json({
-      success: false,
-      message: "수량을 1개이상 입력해주세요.",
-    });
+    throw new Error("수량을 1개 이상 입력해주세요.");
   }else {
     const users = await User.findOne({ user_id: req.body.user_id });
     
@@ -60,12 +55,17 @@ router.post("/api/import/upload", async (req, res) => {
         user_id: req.body.user_id,
         box_quantity: (req.body.product.quantity-quantityQuotient*6).toString(),
       });}
-
-  }
     res.json({
       success: true,
       message: "Success!",
     });
+}}catch (error) {
+  console.log(error);
+  res.json({
+    success: false,
+    message: error.message,
+  });
+}
 });
 
 router.post("/api/import/view", async (req, res) => {
