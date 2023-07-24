@@ -85,6 +85,23 @@ router.post("/api/import/input", async (req, res) => {
       users.waiting_list = users.waiting_list.filter((item) => item._id.valueOf() !== req.body.product._id);
       
       await users.save();
+      for(var i=0;i<req.body.product.quantity*30;i++){
+        firebase.database().ref("/kafkaitems/"+"apple").push({
+        user_id: req.body.user_id.toString(),
+        item: req.body.product.item.toString(),
+        kind: req.body.product.kind.toString(),
+        weight: getRandomNumberInRange(260,320).toString(),
+        row: getRandomNumberInRange(77,81).toString(),
+        col: getRandomNumberInRange(85,91).toString(),
+        ratio: getRandomNumberInRange(0.85,0.95).toString(),
+        hardness: getRandomNumberInRange(53,58).toString(),
+        brix: getRandomNumberInRange(12,13).toString(),
+        acidity: getRandomNumberInRange(0.35,0.45).toString(),
+        color: req.body.product.boxcolor.toString(),
+        grade: getRandomCharacterFromString("ABCDE").toString(),
+          });
+      }
+      
 
     res.json({
       success: true,
@@ -146,4 +163,13 @@ router.post("/api/import/inputview", async (req, res) => {
     res.send(err);
   }
 });
+function getRandomNumberInRange(min, max) {
+  const randomDecimal = Math.random() * (max - min) + min;
+
+  return Math.round(randomDecimal*100)/100;
+}
+function getRandomCharacterFromString(str) {
+  const randomIndex = Math.floor(Math.random() * str.length);
+  return str[randomIndex];
+}
 module.exports = router;
