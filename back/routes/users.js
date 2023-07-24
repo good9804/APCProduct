@@ -32,7 +32,7 @@ router.post("/api/import/upload", async (req, res) => {
   }else {
     const users = await User.findOne({ user_id: req.body.user_id });
     
-    users.product_list.push({
+    users.waiting_list.push({
       user_id: req.body.user_id,
       item: req.body.product.item,
       kind: req.body.product.kind,
@@ -42,6 +42,32 @@ router.post("/api/import/upload", async (req, res) => {
       others: req.body.product.others,
     });
     await users.save();
+    res.json({
+      success: true,
+      message: "Success!",
+    });
+}}catch (error) {
+  console.log(error);
+  res.json({
+    success: false,
+    message: error.message,
+  });
+}
+});
+router.post("/api/import/input", async (req, res) => {
+  try{
+    const users = await User.findOne({ user_id: req.body.user_id });
+    console.log(req.body.product);
+    console.log(users.waiting_list[0]._id);
+    users.product_list.push({
+      user_id: req.body.user_id,
+      item: req.body.product.item,
+      kind: req.body.product.kind,
+      boxcolor: req.body.product.boxcolor,
+      kg: req.body.product.kg,
+      quantity: req.body.product.quantity,
+      others: req.body.product.others,
+    });
     var quantityQuotient=  Math.floor(req.body.product.quantity/6);
     for(var i=0;i<quantityQuotient;i++)
     {
@@ -55,11 +81,16 @@ router.post("/api/import/upload", async (req, res) => {
         user_id: req.body.user_id,
         box_quantity: (req.body.product.quantity-quantityQuotient*6).toString(),
       });}
+
+      users.waiting_list = users.waiting_list.filter((item) => item._id.valueOf() !== req.body.product._id);
+      
+      await users.save();
+
     res.json({
       success: true,
       message: "Success!",
     });
-}}catch (error) {
+}catch (error) {
   console.log(error);
   res.json({
     success: false,
@@ -67,7 +98,6 @@ router.post("/api/import/upload", async (req, res) => {
   });
 }
 });
-
 router.post("/api/import/view", async (req, res) => {
   try {
     var user_info;
@@ -92,5 +122,28 @@ router.post("/api/import/view", async (req, res) => {
     res.send(err);
   }
 });
-
+router.post("/api/import/inputview", async (req, res) => {
+  try {
+    var user_info;
+    var waiting_list = [];
+    if (req.body.login_user_role == 0) {
+      user_info = await User.find({});
+      user_info.forEach(function (item1) {
+        item1["waiting_list"].forEach(function (item2) {
+          let item3 = item2.toJSON();
+          item3.user_id = item1.user_id;
+          waiting_list.push(item3);
+        });
+      });
+      res.json({ waiting_list: waiting_list });
+    } else {
+      user_info = await User.find({ user_id: req.body.user_id });
+      await console.log(user_info);
+      res.json({ waiting_list: user_info[0].waiting_list });
+    }
+  } catch (err) {
+    console.log(err);
+    res.send(err);
+  }
+});
 module.exports = router;

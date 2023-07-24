@@ -39,6 +39,7 @@ router.post("/api/detail/view", async (req, res) => {
   }
 });
 
+
 router.get("/api/admin/view", async (req, res) => {
   try {
     var product_list = [];
