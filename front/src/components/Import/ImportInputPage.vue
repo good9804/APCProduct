@@ -92,7 +92,7 @@ export default {
                         if (res.data.success == false) {
                             alert(res.data.message);
                         }
-                        window.location.href = 'http://localhost/dashboard';
+                        window.location.href = 'https://19c4-118-36-223-138.ngrok-free.app/dashboard';
                     })
                     .catch((err) => {
                         alert(err);
