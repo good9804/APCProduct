@@ -13,18 +13,20 @@ router.post("/api/register", async (req, res) => {
       product_image: req.files.file.data,
     });
     await new_products.save();
-    res.json({ message: "success" });
+    res.json({ 
+      success:true,
+      message:"등록 완료" });
   } catch {
-    res.json({ message: "fail" });
+    res.json({ message: "fail" ,success:false,});
   }
 });
 
 router.get("/api/view", async (req, res) => {
   try {
     const product_list = await Product.find({});
-    res.json({ product_list: product_list, message: "success" });
+    res.json({ product_list: product_list, message: "조회 성공",success:true, });
   } catch {
-    res.json({ message: "fail" });
+    res.json({ message: "fail" ,success:false,});
   }
 });
 
@@ -33,9 +35,11 @@ router.post("/api/detail/view", async (req, res) => {
     const product_info = await Product.findOne({
       product_number: req.body.product_number,
     });
-    res.json({ product_info: product_info, message: "success" });
+    res.json({ product_info: product_info, 
+      success:true,
+      message:"등록 완료" });
   } catch {
-    res.json({ message: "fail" });
+    res.json({ success:false,message: "fail" });
   }
 });
 
@@ -50,9 +54,9 @@ router.get("/api/admin/view", async (req, res) => {
         product_detail: element["product_detail"],
       });
     });
-    res.json({ product_list: product_list, message: "success" });
+    res.json({ product_list: product_list, message: "success" ,success:true,});
   } catch {
-    res.json({ message: "fail" });
+    res.json({ message: "fail" ,success:false});
   }
 });
 
@@ -92,8 +96,9 @@ router.post("/api/upload/review", async (req, res) => {
     });
 
     await product.save();
-    res.json({ message: "success" });
+    res.json({ message: "리뷰 등록 성공",success:true });
   } catch (err) {
+
     res.send(err);
   }
 });

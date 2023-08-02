@@ -92,6 +92,7 @@ export default {
                         if (res.data.success == false) {
                             alert(res.data.message);
                         }
+                        window.location.href = 'http://localhost/dashboard';
                     })
                     .catch((err) => {
                         alert(err);

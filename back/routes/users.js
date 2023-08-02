@@ -44,7 +44,7 @@ router.post("/api/import/upload", async (req, res) => {
     await users.save();
     res.json({
       success: true,
-      message: "Success!",
+      message: "입고 성공!",
     });
 }}catch (error) {
   console.log(error);
@@ -105,7 +105,7 @@ router.post("/api/import/input", async (req, res) => {
 
     res.json({
       success: true,
-      message: "Success!",
+      message: "투입 성공!",
     });
 }catch (error) {
   console.log(error);

@@ -10,7 +10,7 @@ router.post("/api/counsel/upload", async (req, res) => {
   ) {
     res.json({
       success: false,
-      message: "Fill the form!",
+      message: "항목을 다 입력해주세요.",
     });
   } else {
     const new_counsel = new Counsel({
@@ -22,7 +22,7 @@ router.post("/api/counsel/upload", async (req, res) => {
     await new_counsel.save();
     res.json({
       success: true,
-      message: "Success!",
+      message: "문의사항 등록 성공!",
     });
   }
 });
