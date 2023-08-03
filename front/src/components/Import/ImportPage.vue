@@ -29,6 +29,7 @@
             >입고 품종</label
           >
           <select
+           v-if="product.item === '사과'"
             id="default"
             v-model="product.kind"
             class="bg-gray-50 border border-gray-300 text-gray-900 mb-6 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -38,6 +39,57 @@
             <option value="양광">양광</option>
             <option value="후지">후지</option>
             <option value="기타">기타</option>
+          </select>
+          <select
+           v-if="product.item === '토마토'"
+            id="default"
+            v-model="product.kind"
+            class="bg-gray-50 border border-gray-300 text-gray-900 mb-6 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          >
+            <option value="적색계">적색계</option>
+            <option value="도색계">도색계</option>
+  
+          </select>
+          <select
+           v-if="product.item === '포도'"
+            id="default"
+            v-model="product.kind"
+            class="bg-gray-50 border border-gray-300 text-gray-900 mb-6 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          >
+            <option value="캠벨얼리">캠벨얼리</option>
+            <option value="거봉">거봉</option>
+            <option value="머루">머루</option>
+          </select>
+          <select
+           v-if="product.item === '참다래'"
+            id="default"
+            v-model="product.kind"
+            class="bg-gray-50 border border-gray-300 text-gray-900 mb-6 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          >
+            <option value="골드">골드</option>
+            <option value="레드">레드</option>
+            <option value="그린">그린</option>
+          </select>
+          <select
+           v-if="product.item === '파프리카'"
+            id="default"
+            v-model="product.kind"
+            class="bg-gray-50 border border-gray-300 text-gray-900 mb-6 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          >
+            <option value="하계작형">하계작형</option>
+            <option value="동계작형">동계작형</option>
+          </select>
+          <select
+           v-if="product.item === '딸기'"
+            id="default"
+            v-model="product.kind"
+            class="bg-gray-50 border border-gray-300 text-gray-900 mb-6 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          >
+            <option value="매향">매향</option>
+            <option value="설향">설향</option>
+            <option value="금향">금향</option>
+            <option value="킹스베리">킹스베리</option>
+            <option value="아리향">아리향</option>
           </select>
 
           <label
