@@ -47,11 +47,11 @@
             <div class="flex flex-col items-center justify-center">
               <dt class="mb-2 text-3xl font-extrabold">박스 무게</dt>
               <dd class="text-xl text-gray-500 dark:text-white">
-                {{ selected_product.kg }} KG
+                {{ selected_product.kg }} Kg
               </dd>
             </div>
             <div class="flex flex-col items-center justify-center">
-              <dt class="mb-2 text-3xl font-extrabold">수량</dt>
+              <dt class="mb-2 text-3xl font-extrabold">수량(단위:Box)</dt>
               <dd class="text-xl text-gray-500 dark:text-white">
                 {{ selected_product.quantity }}
               </dd>

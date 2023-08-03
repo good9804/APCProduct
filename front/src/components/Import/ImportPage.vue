@@ -58,7 +58,7 @@
             <label
               for="default-input"
               class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-              >박스 무게</label
+              >박스 무게(단위:Kg)</label
             >
             <input
               type="text"
@@ -72,7 +72,7 @@
             <label
               for="default-input"
               class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-              >수량</label
+              >수량(단위:Box)</label
             >
             <input
               type="text"
@@ -85,7 +85,7 @@
           <label
             for="default-input"
             class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-            >총 무게 : {{ product.kg * product.quantity }}KG</label
+            >총 무게 : {{ product.kg * product.quantity }}Kg</label
           >
         </div>
         <div
