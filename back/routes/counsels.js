@@ -22,7 +22,7 @@ router.post("/api/counsel/upload", async (req, res) => {
     await new_counsel.save();
     res.json({
       success: true,
-      message: "문의사항 등록 성공!",
+      message: "문의사항 등록이 완료되었습니다.",
     });
   }
 });

@@ -24,7 +24,7 @@ router.post("/api/register", async (req, res) => {
 router.get("/api/view", async (req, res) => {
   try {
     const product_list = await Product.find({});
-    res.json({ product_list: product_list, message: "조회 성공",success:true, });
+    res.json({ product_list: product_list, message: "조회가 완료되었습니다.",success:true, });
   } catch {
     res.json({ message: "fail" ,success:false,});
   }
@@ -96,7 +96,7 @@ router.post("/api/upload/review", async (req, res) => {
     });
 
     await product.save();
-    res.json({ message: "리뷰 등록 성공",success:true });
+    res.json({ message: "리뷰가 등록되었습니다.",success:true });
   } catch (err) {
 
     res.send(err);
