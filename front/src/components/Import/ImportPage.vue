@@ -29,6 +29,14 @@
             >입고 품종</label
           >
           <select
+          v-if="product.item === '품목'"
+          id="default"
+          v-model="product.kind"
+          class="bg-gray-50 border border-gray-300 text-gray-900 mb-6 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        >
+          <option value=""></option>
+        </select>
+          <select
            v-if="product.item === '사과'"
             id="default"
             v-model="product.kind"
@@ -51,7 +59,7 @@
   
           </select>
           <select
-           v-if="product.item === '포도'"
+          v-if="product.item === '포도'"
             id="default"
             v-model="product.kind"
             class="bg-gray-50 border border-gray-300 text-gray-900 mb-6 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -61,7 +69,7 @@
             <option value="머루">머루</option>
           </select>
           <select
-           v-if="product.item === '참다래'"
+          v-if="product.item === '참다래'"
             id="default"
             v-model="product.kind"
             class="bg-gray-50 border border-gray-300 text-gray-900 mb-6 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -71,7 +79,7 @@
             <option value="그린">그린</option>
           </select>
           <select
-           v-if="product.item === '파프리카'"
+          v-if="product.item === '파프리카'"
             id="default"
             v-model="product.kind"
             class="bg-gray-50 border border-gray-300 text-gray-900 mb-6 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -80,7 +88,7 @@
             <option value="동계작형">동계작형</option>
           </select>
           <select
-           v-if="product.item === '딸기'"
+          v-if="product.item === '딸기'"
             id="default"
             v-model="product.kind"
             class="bg-gray-50 border border-gray-300 text-gray-900 mb-6 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
