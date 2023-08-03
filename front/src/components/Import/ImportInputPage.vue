@@ -95,7 +95,13 @@ export default {
                         if (res.data.success == false) {
                             alert(res.data.message);
                         }
-                        window.location.href = 'https://19c4-118-36-223-138.ngrok-free.app/dashboard';
+                        const currentUrl = window.location.href;
+                        console.log(currentUrl);
+                        let url=currentUrl.split('/');
+                        console.log(url);
+                        const changeurl=url[0]+'//'+url[2]+'/dashboard';
+                        console.log(changeurl);
+                        window.location.href=changeurl;
                     })
                     .catch((err) => {
                         alert(err);
