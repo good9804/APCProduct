@@ -135,13 +135,29 @@
                       <span
                         class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0"
                       >
-                        상담내용확인(관리자용)
+                        상담내용작성
                       </span>
                     </button>
                   </th>
                 </tr>
               </tbody>
             </table>
+          </div>
+        </div>
+        <div v-if="showPopup" class="fixed inset-0 z-50 flex items-center justify-center w-screen h-screen bg-black bg-opacity-50">
+          <!-- 팝업 내용 -->
+          <div v-for="counsel in counsel_list"
+                  :key="counsel.idx"
+                  class="bg-white p-5 rounded-lg shadow-lg" style="width: 400px; height: 300px;">
+            <!-- 팝업 내용을 표시할 부분 -->
+            <p>답변을 작성해주세요</p>
+            <textarea v-model="new_counsel_answer" class="w-full h-40 mt-2 px-3 py-1 border border-gray-300 rounded" >
+            </textarea>   
+            <!-- 팝업 내용 끝 -->
+            <div class="flex justify-end mt-4">
+            <button @click="submitAnswer(counsel,new_counsel_answer)" class="px-3 py-1 text-white bg-blue-500 rounded">입력</button>
+            <button @click="closePopup" class="ml-2 px-3 py-1 text-white bg-red-500 rounded">취소</button>
+            </div>
           </div>
         </div>
       </div>
@@ -160,6 +176,7 @@ export default {
       date: new Date(),
       all_counsel_list: [],
       searchId: "",
+      showPopup: false,
     };
   },
   mounted() {
@@ -198,6 +215,7 @@ export default {
       return [year, month, day].join("-");
     },
     checkOrder(counsel_info) {
+      this.showPopup=true;
       //상담체크
       this.$axios
         .post("/product/api/counsel/check", {
@@ -209,14 +227,43 @@ export default {
           res.data.counsel_list.forEach((element) => {
             element["createdAt"] = this.formatDate(element["createdAt"]);
           });
-          this.counsel_list = res.data.counsel_list;
-          this.all_counsel_list = res.data.counsel_list;
+          //this.counsel_list = res.data.counsel_list;
+          //this.all_counsel_list = res.data.counsel_list;
         })
         .catch((err) => {
           alert(err);
         });
     },
+    submitAnswer(counsel_info,new_counsel_answer){
+      console.log('write new Answer', counsel_info)
+      console.log('write new Answer', new_counsel_answer)
+      this.$axios
+        .post("/product/api/counsel/answer", {
+          user_id: this.$store.getters.getUserId,
+          counsel_answer:new_counsel_answer,
+          counsel_info: counsel_info
+        })
+        .then((res) => {
+          if (res.data.success == true) {
+            alert(res.data.message);
+          }
+          if (res.data.success == false) {
+            alert(res.data.message);
+          }
+        })
+        .catch((err)=>{
+          alert(err);
+        }); 
+      this.Answertext='';
+      this.closePopup();
+    },
+
+    closePopup() {
+    // 팝업을 닫기 위해 팝업 노출 여부를 false로 설정
+    this.showPopup = false;
+    },
   },
+
   watch: {
     //vuex 변수의 값이 변함을 감지하는 곳
     date() {
