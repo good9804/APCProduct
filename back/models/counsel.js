@@ -7,6 +7,7 @@ const counselSchema = new mongoose.Schema(
     counsel_item: { type: String },
     counsel_title: { type: String },
     counsel_content: { type: String },
+    counsel_answer: {type: String, default: 'no Answer'},
     counsel_check: {
       type: Boolean,
       default: false,

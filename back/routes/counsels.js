@@ -58,4 +58,16 @@ router.post("/api/counsel/check", async (req, res) => {
   }
   res.json({ counsel_list: counsel_list });
 });
+
+
+router.post("/api/counsel/answer", async (req,res)=>{
+  console.log(req.body.counsel_answer);
+  await Counsel.findOneAndUpdate({
+    _id: req.body.counsel_info._id
+  },{counsel_answer:req.body.counsel_answer});
+  
+  
+  res.json({counsel_list: counsel_list});
+});
+
 module.exports = router;
