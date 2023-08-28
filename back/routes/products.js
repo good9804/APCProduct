@@ -1,6 +1,7 @@
 var express = require("express");
 var router = express.Router();
 const Product = require("../models/product");
+const Sort = require("../models/sortsample");
 
 router.post("/api/register", async (req, res) => {
   try {
@@ -102,5 +103,7 @@ router.post("/api/upload/review", async (req, res) => {
     res.send(err);
   }
 });
+
+
 
 module.exports = router;
