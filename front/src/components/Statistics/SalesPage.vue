@@ -1,5 +1,6 @@
 <template>
     <div class="flex-wrap p-2 sm:ml-64">
+  
       <div
         class="p-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700 mt-14"
       >
@@ -35,12 +36,33 @@
                             {{ usercode }}
                           </option>
                         </select>
+                        
+                        <label
+                          for="default"
+                          class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                          >시작 날짜</label
+                        >
+                        <input type="date" v-model="startdate" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+
+                        <label
+                          for="default"
+                          class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                          >종료 날짜</label
+                        >
+                        <input type="date" v-model="enddate" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                         <div class="mb-6">
                           <button
                             class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                             @click="onSelectUser"
                           >
                             조회
+                          </button>
+
+                          <button
+                            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                            @click="onGetSales"
+                          >
+                              기간 조회
                           </button>
                         </div>
                       </div>
@@ -61,20 +83,34 @@
                     정산 총액(원) : {{ totalprice }}
                   </h5>
             </div>
+            <div class="bg-white " width="600" height="600">
+    <canvas id="myChart"></canvas>
+  </div>
           </div>
         </div>
       </div>
   </template>
+  
    <script>
+//import 'chartjs-adapter-date-fns'; // date-fns 어댑터 import
+import { Chart, registerables } from "chart.js";
+Chart.register(...registerables,);
+//import { format } from 'date-fns';
+
    export default {
      name: "app",
      data() {
         return {
   all_usercode: new Set(), // Set 인스턴스 생성
   all_usercode_array: [],
-  select_usercode: '',
+  select_usercode: 'K10507',
   salesMap: new Map(),// Map 인스턴스 생성
   totalprice:'',
+  startdate:'2019-07-23',
+  enddate:'2019-07-24',
+  dateArray:'',
+  saleArray:'',
+  chartInstance:null,
 };
      },
      methods: {
@@ -113,6 +149,79 @@
            .catch((err) => {
              alert(err);
            });
+       },
+       onGetSales(){
+
+        if (this.chartInstance !== null) {
+    this.chartInstance.destroy();
+    this.chartInstance = null; // Reset the chart instance reference
+    console.log("destory1")
+  }
+        this.$axios
+           .post("/product/api/statistics/salesview", {
+            usercode: this.select_usercode,
+            startdate: this.startdate,
+            enddate: this.enddate,
+           })
+           .then((res) => {
+            console.log("this.chartInstance");
+             this.saleArray= res.data.saleArray;
+             //this.dateArray = res.data.dateArray.map(date => format(new Date(date), 'yyyy-MM-dd'));
+             this.dateArray = res.data.dateArray;
+             this.dateArray.forEach(element => {
+              console.log(element);
+             });
+             console.log(this.chartInstance);
+            console.log("draw");
+             this.drawChart();
+           })
+           .catch((err) => {
+             alert(err);
+           });
+       },
+       drawChart(){
+        console.log("draw1");
+        this.dateArray.forEach(element => {
+              console.log(element);
+             });
+             this.saleArray.forEach(element => {
+              console.log(element);
+             });
+        const ctx = document.getElementById('myChart').getContext('2d');
+        console.log("Canvas element:", document.getElementById('myChart'));
+        console.log("ctx element:", document.getElementById('myChart').getContext('2d'));
+        this.chartInstance=null;
+  this.chartInstance=new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: this.dateArray,
+      datasets: [
+        {
+          label: 'Sales',
+          data: this.saleArray,
+          borderColor: 'blue',
+          fill: false
+        }
+      ]
+    },
+    options: {
+      scales: {
+    x: {
+        type: 'category', // 'time' 대신 'linear'
+        title: {
+          display: true,
+          text: 'Date'
+        }
+      },
+    y: {
+      title: {
+        display: true,
+        text: 'Value'
+      }
+    }
+  }
+}
+  });
        },
 
      },
