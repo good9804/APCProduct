@@ -11,6 +11,7 @@ RUN npm run build
 
 WORKDIR /app/back
 RUN npm install
+RUN npm install date-fns
 
 EXPOSE 3002
 
