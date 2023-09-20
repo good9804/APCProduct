@@ -1,6 +1,7 @@
 var express = require("express");
 var router = express.Router();
 const Sort = require("../models/sortsample");
+const Storage = require("../models/storage"); 
 const { be } = require("date-fns/locale");
 
 router.get("/api/statistics/view", async (req, res) => {
@@ -98,6 +99,37 @@ router.get("/api/statistics/view", async (req, res) => {
       res.json({
         success:true,
          message: "조회가 완료되었습니다.", dateArray: keysArray,saleArray:valuesArray });
+    } catch (err) {
+      success: false,
+      res.send(err);
+    }
+  });
+
+  router.get("/api/statistics/storagesview", async (req, res) => {
+    try {
+      const storageData = await Storage.find({}); // 모든 데이터 가져오기
+      console.log(storageData);
+      const totalMap = new Map();
+      totalMap.set('A',0);
+      totalMap.set('B',0);
+      totalMap.set('C',0);
+      totalMap.set('D',0);
+      totalMap.set('E',0);
+      storageData.forEach((data) => {
+        data.sector.forEach((sector) => {
+          const grade = sector.grade;
+          const quantity = sector.pallet.reduce((total, item) => total + item.quantity, 0);
+          console.log(quantity)
+          totalMap.set(grade, totalMap.get(grade) + quantity);
+        });
+      });
+      const gradeTotals= Array.from(totalMap).map(([key, value]) => value);
+      gradeTotals.forEach((data)=>{
+        console.log(data);
+      })
+      res.json({
+        success:true,
+         message: "조회가 완료되었습니다.", gradeTotals: gradeTotals, });
     } catch (err) {
       success: false,
       res.send(err);

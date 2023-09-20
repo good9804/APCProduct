@@ -50,6 +50,12 @@ const router = createRouter({
       component: () => import("@/components/Statistics/SalesPage"),
       meta: { requiresAuth: true },
     },
+    {
+      path: "/product/statistics/storages",
+      name: "StoragesPage",
+      component: () => import("@/components/Statistics/StoragesPage"),
+      meta: { requiresAuth: true },
+    },
   ],
 });
 
